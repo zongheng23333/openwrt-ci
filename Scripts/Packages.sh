@@ -58,8 +58,8 @@ UPDATE_PACKAGE "theme-fluent" "LazuliKao/luci-theme-fluent" "main"
 
 UPDATE_PACKAGE "momo" "nikkinikki-org/OpenWrt-momo" "main"
 UPDATE_PACKAGE "nikki" "nikkinikki-org/OpenWrt-nikki" "main"
-UPDATE_PACKAGE "openclash" "vernesong/OpenClash" "dev" "pkg"
-UPDATE_PACKAGE "passwall" kenzok8/small" "main" "pkg"
+UPDATE_PACKAGE "openclash" "vernesong/OpenClash"  "dev"  "pkg"
+UPDATE_PACKAGE "passwall" "kenzok8/small" "main" "pkg"
 UPDATE_PACKAGE "passwall2" "kenzok8/small" "main" "pkg"
 
 UPDATE_PACKAGE "luci-app-tailscale" "asvow/luci-app-tailscale" "main"
