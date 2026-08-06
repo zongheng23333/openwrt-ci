@@ -118,40 +118,26 @@ jobs:
         run: |
           find ./ -maxdepth 3 -type f -iregex ".*\(txt\|sh\)$" -exec dos2unix {} \; -exec chmod +x {} \;
 
-      - name: Check Caches
-        id: check-cache
+      # ========== 优化缓存：仅缓存 tool* 和 .ccache，不缓存 host* ==========
+      - name: Restore Toolchain & ccache Cache
+        id: cache-toolchain
         if: env.WRT_TEST != 'true'
-        uses: actions/cache@main
+        uses: actions/cache@v4
         with:
-          key: ${{env.WRT_CONFIG}}-${{env.WRT_INFO}}-${{env.WRT_HASH}}
-          restore-keys: ${{env.WRT_CONFIG}}-${{env.WRT_INFO}}
           path: |
             ./wrt/.ccache
-            ./wrt/staging_dir/host*
             ./wrt/staging_dir/tool*
+          key: ${{env.WRT_CONFIG}}-${{env.WRT_INFO}}-${{env.WRT_HASH}}
+          restore-keys: |
+            ${{env.WRT_CONFIG}}-${{env.WRT_INFO}}-
 
-      - name: Update Caches
-        if: env.WRT_TEST != 'true'
+      # ========== 限制 ccache 大小（避免膨胀） ==========
+      - name: Limit ccache size
+        if: env.WRT_TEST != 'true' && steps.cache-toolchain.outputs.cache-hit == 'true'
         run: |
-          if [ -d "./wrt/staging_dir" ]; then
-            find "./wrt/staging_dir" -type d -name "stamp" -not -path "*target*" | while read -r DIR; do
-              find "$DIR" -type f -exec touch {} +
-            done
-
-            mkdir -p ./wrt/tmp && echo "1" > ./wrt/tmp/.build
-
-            echo "toolchain skiped done!"
-          else
-            echo "caches missed!"
-          fi
-
-          if ${{steps.check-cache.outputs.cache-hit != 'true'}}; then
-            CACHE_LIST=$(gh cache list --key "$WRT_CONFIG-$WRT_INFO" | cut -f 1)
-            for CACHE_KEY in $CACHE_LIST; do
-              gh cache delete $CACHE_KEY
-            done
-
-            echo "caches cleanup done!"
+          cd ./wrt/
+          if command -v ccache &> /dev/null; then
+            ccache -M 2G   # 限制为 2GB，可根据需要调整
           fi
 
       - name: Update Feeds
@@ -164,7 +150,6 @@ jobs:
           ./scripts/feeds install -a
           rm -rf feeds/packages/lang/golang
           git clone https://github.com/sbwml/packages_lang_golang -b 26.x feeds/packages/lang/golang
-
 
       - name: Custom Packages
         run: |
