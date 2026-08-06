@@ -19,6 +19,13 @@ sed -i "s/encryption=.*/encryption='psk2+ccmp'/g" $WIFI_FILE
 #修改WIFI密码
 sed -i "/set wireless.default_\${dev}.encryption='psk2+ccmp'/a \\\t\t\t\t\t\set wireless.default_\${dev}.key='$WRT_WORD'" $WIFI_FILE
 
+if [ -z "$WRT_WORD" ]; then
+    # 在 .config 中设置默认加密为 none（不同 OpenWrt 版本可能有差异）
+    sed -i 's/CONFIG_WIRELESS_ENCRYPTION=.*/CONFIG_WIRELESS_ENCRYPTION="none"/' .config
+fi
+
+
+
 CFG_FILE="./package/base-files/files/bin/config_generate"
 #修改默认IP地址
 sed -i "s/192\.168\.[0-9]*\.[0-9]*/$WRT_IP/g" $CFG_FILE
