@@ -61,8 +61,9 @@ UPDATE_PACKAGE "nikki" "nikkinikki-org/OpenWrt-nikki" "main"
 UPDATE_PACKAGE "openclash" "vernesong/OpenClash"  "dev"  "pkg"
 UPDATE_PACKAGE "passwall" "kenzok8/small" "master" "pkg"
 UPDATE_PACKAGE "xray-core"   "kenzok8/small"  "master" "pkg"
-UPDATE_PACKAGE "sing-box"   "kenzok8/small"  "master" "pkg"
+# UPDATE_PACKAGE "sing-box"   "kenzok8/small"  "master" "pkg"
 UPDATE_PACKAGE "luci-app-homeproxy"   "kenzok8/small-package"  "main" "pkg"
+UPDATE_PACKAGE "store"   "kenzok8/small-package"  "main" "pkg"
 
 UPDATE_PACKAGE "passwall2" "kenzok8/small" "master" "pkg"
 
