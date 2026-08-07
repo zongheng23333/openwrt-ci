@@ -14,16 +14,23 @@ sed -i "s/(\(luciversion || ''\))/(\1) + (' \/ $WRT_MARK-$WRT_DATE')/g" $(find .
 WIFI_FILE="./package/mtk/applications/mtwifi-cfg/files/mtwifi.sh"
 #修改WIFI名称
 sed -i "s/ImmortalWrt/$WRT_SSID/g" $WIFI_FILE
-#修改WIFI加密
-sed -i "s/encryption=.*/encryption='psk2+ccmp'/g" $WIFI_FILE
-#修改WIFI密码
-sed -i "/set wireless.default_\${dev}.encryption='psk2+ccmp'/a \\\t\t\t\t\t\set wireless.default_\${dev}.key='$WRT_WORD'" $WIFI_FILE
 
+# 修改 WiFi 加密和密码
 if [ -z "$WRT_WORD" ]; then
-    # 在 .config 中设置默认加密为 none（不同 OpenWrt 版本可能有差异）
-    sed -i 's/CONFIG_WIRELESS_ENCRYPTION=.*/CONFIG_WIRELESS_ENCRYPTION="none"/' .config
+    # 密码为空 → 开放网络（无加密）
+    sed -i "s/encryption=.*/encryption='none'/g" $WIFI_FILE
+    # 删除可能存在的旧 key 行
+    sed -i "/set wireless.default_\${dev}.key=/d" $WIFI_FILE
+else
+    # 有密码 → 使用 WPA2-PSK + CCMP
+    sed -i "s/encryption=.*/encryption='psk2+ccmp'/g" $WIFI_FILE
+    # 检查是否已有 key 行，若没有则插入，否则更新
+    if grep -q "set wireless.default_\${dev}.key=" $WIFI_FILE; then
+        sed -i "s/set wireless.default_\${dev}.key=.*/set wireless.default_\${dev}.key='$WRT_WORD'/" $WIFI_FILE
+    else
+        sed -i "/set wireless.default_\${dev}.encryption='psk2+ccmp'/a \\\t\t\t\t\t\set wireless.default_\${dev}.key='$WRT_WORD'" $WIFI_FILE
+    fi
 fi
-
 
 
 CFG_FILE="./package/base-files/files/bin/config_generate"
