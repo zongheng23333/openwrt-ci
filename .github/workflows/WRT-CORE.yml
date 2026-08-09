@@ -118,7 +118,7 @@ jobs:
         run: |
           find ./ -maxdepth 3 -type f -iregex ".*\(txt\|sh\)$" -exec dos2unix {} \; -exec chmod +x {} \;
 
-      # ========== 优化缓存：增加 dl 目录，使用稳定键 ==========
+      # ========== 缓存：按平台（WRT_TARGET）共享 ==========
       - name: Restore Toolchain & ccache Cache
         id: cache-toolchain
         if: env.WRT_TEST != 'true'
@@ -126,13 +126,13 @@ jobs:
         with:
           path: |
             ./wrt/.ccache
-            ./wrt/dl                    # 新增：缓存下载的源码包
+            ./wrt/dl
             ./wrt/staging_dir/tool*
             ./wrt/staging_dir/target-*
-          # 使用 配置+仓库名+分支 作为键（不含哈希），保证长期复用
-          key: ${{env.WRT_CONFIG}}-${{env.WRT_INFO}}-${{env.WRT_BRANCH}}
+          # 使用 目标平台 + 仓库名 + 分支 作为键，同一平台所有配置共享缓存
+          key: ${{env.WRT_TARGET}}-${{env.WRT_INFO}}-${{env.WRT_BRANCH}}
           restore-keys: |
-            ${{env.WRT_CONFIG}}-${{env.WRT_INFO}}-${{env.WRT_BRANCH}}
+            ${{env.WRT_TARGET}}-${{env.WRT_INFO}}-${{env.WRT_BRANCH}}
 
       # ========== 配置 ccache 大小 ==========
       - name: Configure ccache
@@ -141,7 +141,7 @@ jobs:
           cd ./wrt/
           export PATH="/usr/lib/ccache:$PATH"
           ccache -M 4G
-          ccache -z   # 重置统计（可选）
+          ccache -z
 
       - name: Update Feeds
         run: |
@@ -174,7 +174,7 @@ jobs:
           $GITHUB_WORKSPACE/Scripts/Settings.sh
 
           make defconfig -j$(nproc)
-          # 移除了 make clean，保留构建目录
+          # 已移除 make clean，保留构建目录
 
       - name: Download Packages
         if: env.WRT_TEST != 'true'
@@ -229,7 +229,7 @@ jobs:
 
             find ./bin/targets/ -type f -exec mv -f {} ./upload/ \;
 
-            # ===== 已移除 make clean，保存所有编译中间文件用于缓存 =====
+            # 已移除 make clean，保留编译中间文件用于缓存共享
           fi
 
       - name: Release Firmware
