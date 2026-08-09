@@ -118,7 +118,7 @@ jobs:
         run: |
           find ./ -maxdepth 3 -type f -iregex ".*\(txt\|sh\)$" -exec dos2unix {} \; -exec chmod +x {} \;
 
-      # ========== 优化缓存：使用稳定键，增加 target 目录 ==========
+      # ========== 优化缓存：增加 dl 目录，使用稳定键 ==========
       - name: Restore Toolchain & ccache Cache
         id: cache-toolchain
         if: env.WRT_TEST != 'true'
@@ -126,6 +126,7 @@ jobs:
         with:
           path: |
             ./wrt/.ccache
+            ./wrt/dl                    # 新增：缓存下载的源码包
             ./wrt/staging_dir/tool*
             ./wrt/staging_dir/target-*
           # 使用 配置+仓库名+分支 作为键（不含哈希），保证长期复用
@@ -146,7 +147,7 @@ jobs:
         run: |
           cd ./wrt/
           echo >> feeds.conf.default
-           sed -i '$a src-git smpackage https://github.com/kenzok8/small-package' feeds.conf.default
+          sed -i '$a src-git smpackage https://github.com/kenzok8/small-package' feeds.conf.default
 
           ./scripts/feeds update -a
           ./scripts/feeds install -a
@@ -173,7 +174,7 @@ jobs:
           $GITHUB_WORKSPACE/Scripts/Settings.sh
 
           make defconfig -j$(nproc)
-          # ===== 移除 make clean，避免清理构建目录 =====
+          # 移除了 make clean，保留构建目录
 
       - name: Download Packages
         if: env.WRT_TEST != 'true'
@@ -228,8 +229,7 @@ jobs:
 
             find ./bin/targets/ -type f -exec mv -f {} ./upload/ \;
 
-            # 注意：此处保留 make clean 仅为了清理编译产物，不影响缓存（因为缓存已经保存）
-            make clean -j$(nproc)
+            # ===== 已移除 make clean，保存所有编译中间文件用于缓存 =====
           fi
 
       - name: Release Firmware
