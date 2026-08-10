@@ -38,7 +38,7 @@ jobs:
         with:
           gh_token: ${{secrets.GITHUB_TOKEN}}
           delete_releases: true
-          releases_keep_latest: 12
+          releases_keep_latest: 16
           delete_tags: true
           delete_workflows: true
           workflows_keep_day: 30             # 保留最近 30 天的记录
