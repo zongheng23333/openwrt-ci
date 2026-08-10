@@ -52,8 +52,7 @@ CONFIG_TARGET_DEVICE_mediatek_filogic_DEVICE_xiaomi_mi-router-ax3000t-ubootmod=y
 
 CONFIG_TARGET_DEVICE_mediatek_filogic_DEVICE_xiaomi_mi-router-wr30u-ubootmod=y
 
-CONFIG_TARGET_DEVICE_mediatek_filogic_DEVICE_zbtlink_zbt-z8103ax-c=y
-CONFIG_TARGET_DEVICE_mediatek_filogic_DEVICE_zbtlink_zbt-z8103ax-c-nmbm=y
+
 CONFIG_TARGET_DEVICE_mediatek_filogic_DEVICE_zbtlink_zbt-z8103ax-c-ubootmod=y
 #必选组件
 CONFIG_first_card_name="MT7981"
