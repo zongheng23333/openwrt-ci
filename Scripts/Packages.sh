@@ -67,7 +67,7 @@ UPDATE_PACKAGE "store"   "kenzok8/small-package"  "main" "pkg"
 UPDATE_PACKAGE "sing-box"   "VIKINGYFY/packages"  "main" "pkg"
 UPDATE_PACKAGE "luci-app-homeproxy"   "VIKINGYFY/packages"  "main" "pkg"
 
-UPDATE_PACKAGE "passwall2" "kenzok8/small" "master" "pkg"
+UPDATE_PACKAGE "passwall2"     "kenzok8/small-package"  "main" "pkg"
 
 
 
