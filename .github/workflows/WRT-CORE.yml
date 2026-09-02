@@ -113,6 +113,7 @@ jobs:
           if [ -f "$PROJECT_MIRRORS_FILE" ]; then
             sed -i '/.cn\//d; /tencent/d; /aliyun/d' "$PROJECT_MIRRORS_FILE"
           fi
+          
 
       - name: Check Scripts
         run: |
@@ -180,6 +181,7 @@ jobs:
         if: env.WRT_TEST != 'true'
         run: |
           cd ./wrt/
+          
 
           make download -j$(nproc)
 
@@ -188,6 +190,7 @@ jobs:
         run: |
           cd ./wrt/
           export PATH="/usr/lib/ccache:$PATH"
+          export DRIVEDB_URL=""
           make -j$(nproc) || make -j1 V=s
 
       - name: Show ccache stats
