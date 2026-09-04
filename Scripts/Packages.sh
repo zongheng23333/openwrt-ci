@@ -63,7 +63,7 @@ UPDATE_PACKAGE "openclash" "vernesong/OpenClash"  "dev"  "pkg"
 UPDATE_PACKAGE "passwall"         "kenzok8/small-package"  "main" "pkg"
 # UPDATE_PACKAGE "passwall" "Openwrt-Passwall/openwrt-passwall" "main" "pkg"
 UPDATE_PACKAGE "xray-core"      "kenzok8/small-package"  "main" "pkg"
-
+# UPDATE_PACKAGE "xray-core"      "XTLS/Xray-core"  "v26.7.28"
 
 UPDATE_PACKAGE "store"   "kenzok8/small-package"  "main" "pkg"
 
