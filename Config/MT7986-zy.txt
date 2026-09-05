@@ -16,6 +16,6 @@ CONFIG_WARP_NEW_FW=n
 
 
 CONFIG_PACKAGE_luci-app-mini-diskmanager=y
-CONFIG_PACKAGE_luci-app-partexp=y
-CONFIG_PACKAGE_luci-app-samba4=y
+CONFIG_PACKAGE_luci-app-partexp=n
+CONFIG_PACKAGE_luci-app-samba4=n
 CONFIG_PACKAGE_luci-app-store=y
