@@ -2,11 +2,8 @@
 CONFIG_PACKAGE_luci-app-passwall=y
 CONFIG_PACKAGE_xray-core=y
 
-# CONFIG_PACKAGE_luci-app-openclash is not set
-# CONFIG_PACKAGE_luci-app-homeproxy is not set
-
-# CONFIG_PACKAGE_luci-app-clashoo is not set
-# CONFIG_PACKAGE_clashoo is not set
+CONFIG_PACKAGE_luci-app-openclash=y
+CONFIG_PACKAGE_luci-app-homeproxy=y
 
 #增加插件
 CONFIG_PACKAGE_luci-app-autoreboot=y
