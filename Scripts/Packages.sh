@@ -63,8 +63,10 @@ UPDATE_PACKAGE "openclash" "vernesong/OpenClash"  "dev"  "pkg"
 UPDATE_PACKAGE "passwall"         "kenzok8/small-package"  "main" "pkg"
 # UPDATE_PACKAGE "passwall" "Openwrt-Passwall/openwrt-passwall" "main" "pkg"
 # UPDATE_PACKAGE "xray-core"      "kenzok8/small-package"  "main" "pkg"
-git clone --depth=1 --single-branch --branch v26.10.10 "https://github.com/XTLS/Xray-core.git" ./package/feeds/packages/xray-core
-#UPDATE_PACKAGE "xray-core"         "kenzok8/small-package"  "main" "pkg"
+
+
+#git clone --depth=1 --single-branch --branch v26.10.10 "https://github.com/XTLS/Xray-core.git" ./package/feeds/packages/xray-core
+UPDATE_PACKAGE "xray-core"         "kenzok8/small-package"  "main" "pkg"
 UPDATE_PACKAGE "luci-theme-vantage"      "anothaDev/luci-theme-vantage"   "main"   "pkg"
 UPDATE_PACKAGE "luci-app-vantage"      "anothaDev/luci-theme-vantage"   "main"   "pkg"
 
