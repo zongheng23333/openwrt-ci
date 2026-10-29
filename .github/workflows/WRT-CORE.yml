@@ -92,6 +92,7 @@ jobs:
           sudo mkdir -p /mnt/build_wrt
           sudo chown $USER:$USER /mnt/build_wrt
           sudo ln -s /mnt/build_wrt $GITHUB_WORKSPACE/wrt
+          
       - name: Initialization Values
         run: |
           echo "WRT_DATE=$(TZ=UTC-8 date +"%y.%m.%d-%H.%M.%S")" >> $GITHUB_ENV
@@ -191,11 +192,10 @@ jobs:
           make download -j$(nproc)
 
       - name: Compile Firmware
-        if: env.WRT_TEST != 'true'
+        if: ${{ !inputs.WRT_TEST }}
         run: |
           cd ./wrt/
-          export PATH="/usr/lib/ccache:$PATH"
-          export DRIVEDB_URL=""
+
           make -j$(nproc) || make -j1 V=s
 
       - name: Show ccache stats
